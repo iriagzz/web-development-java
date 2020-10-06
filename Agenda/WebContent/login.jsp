@@ -14,17 +14,14 @@
 			<input type="text" name="login" id="login" required/></br>
 			<label for="senha">Senha: </label>
 			<input type="password" name="senha" id="senha" required/></br></br>
-			<button type="submit" class="btn btn-primary">Entrar</button>
-			
+			<button type="submit" class="btn btn-primary">Entrar</button>		
 		</form>
 	</div>
 	<div>
-		</br></br>
-			
+		</br></br>	
  		<p style="color:red"> ${erro} </p>
 		</div>
 		</p>
 	</div>
-
 </body>
 </html>

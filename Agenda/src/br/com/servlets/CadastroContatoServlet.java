@@ -18,31 +18,18 @@ public class CadastroContatoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Contato contato;
-	private List<Contato> contatos;
+	private static List<Contato> contatos = new ArrayList<>();
 
 	public CadastroContatoServlet() {
 		this.contato = new Contato();
-		this.contatos = new ArrayList();
 	}
-	
-	
 
 	public Contato getContato() {
 		return contato;
 	}
 
-	public List<Contato> getContatos() {
+	public static List<Contato> getContatos() {
 		return contatos;
-	}
-
-	/* Singleton para que apenas um objeto seja instanciado! */
-	private static CadastroContatoServlet instancia = null;
-
-	public static CadastroContatoServlet getInstancia() {
-		if (instancia == null) {
-			instancia = new CadastroContatoServlet();
-		}
-		return instancia;
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -54,25 +41,44 @@ public class CadastroContatoServlet extends HttpServlet {
 		String endereco = request.getParameter("endereco");
 		String senha = request.getParameter("senha");
 
-		this.contato.setNome(nome);
-		this.contato.setEmail(email);
-		this.contato.setTelefone(telefone);
-		this.contato.setEndereco(endereco);
-		this.contato.setSenha(senha);
+		if (validarUsuario(email) != null || validarTelefone(telefone) != null) {
+			request.setAttribute("validador", "Contato já Cadastrado! Verifique e-mail ou telefone!");
+			RequestDispatcher rd = request.getRequestDispatcher("cadastroContato.jsp");
+			rd.forward(request, response);
 
-		this.contatos.add(this.contato);
-		this.contato = new Contato();
+		} else {
+			contatos.add(new Contato(nome, email, telefone, endereco, senha));
+			request.setAttribute("contatos", contatos);//vai pra tabela
+			request.setAttribute("validador", "Contato Cadastrado com Sucesso!");
+			RequestDispatcher rd = request.getRequestDispatcher("listaContatos.jsp");
+			rd.forward(request, response);
+		}
 
-		request.setAttribute("contatos", this.contatos);
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("contatos", contatos);
 		RequestDispatcher rd = request.getRequestDispatcher("listaContatos.jsp");
 		rd.forward(request, response);
 	}
 
-	// memoria - para que haja um usuario pre-cadastrado
-	public void memoria() {
-		CadastroContatoServlet cadastro = CadastroContatoServlet.getInstancia();
-		this.contatos.add(new Contato("iria", "iria@gmail.com", "32461852", "rua das flores", "1234"));
+	public Contato validarUsuario(String email) {
+		for (Contato contato : contatos) {
+			if (email.equals(contato.getEmail())) {
+				return contato;
+			}
+		}
+		return null;
 	}
-	
+
+	public Contato validarTelefone(String telefone) {
+		for (Contato contato : contatos) {
+			if (telefone.equals(contato.getTelefone())) {
+				return contato;
+			}
+		}
+		return null;
+	}
 
 }

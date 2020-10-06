@@ -8,15 +8,18 @@
 <title>welcome!</title>
 </head>
 <body>
+
 	<div>
+
 		<h1>MENU</h1>
 		</br>
-		<a href="cadastroContato.jsp">Cadastro Contato</a></br>
-		<a href="listaContatos.jsp">Lista de Contatos</a></br>
-		<a href="login.jsp">Sair</a></br>
 		
+		<form action="CadastroContatoServlet" method="GET">
+		<input type="submit" class="btn btn-dark" value="Cadastro Contato" style="width:15%; margin:5px" formAction="cadastroContato.jsp"></br>
+		<input type="submit" class="btn btn-dark" value="Lista de Contatos" style="width:15%; margin:5px"></br>
+		<input type="submit" class="btn btn-dark" value="Sair" style="width:15%; margin:5px" formAction="login.jsp">
+		</form>
 		
 	</div>
-
 </body>
 </html>
